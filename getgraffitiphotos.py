@@ -7,23 +7,33 @@ Created on Sat Oct  8 13:05:03 2016
 
 import flickr_api
 from flickr_api.api import flickr
+import json
 
 def main():
     # credentials to access flickr api
     initialise()
-    photos_xml = flickr.photos.search(tags='street art', lat=51.452705, lon=-2.595146, radius=1, radius_units='km', extras='geo, url_l')
+    photos_xml = flickr.photos.search(tags='street art', lat=51.452705, lon=-2.595146, radius=0.6, radius_units='km', extras='geo, url_l')
     photos_json = xmltojson(photos_xml)
     
     photo = photos_json['rsp']['photos']['photo']
 
-    print photo[0]    
+    d={}
+    dlist=[]
 
+    for p in photo:
+        d['id'] = p['@id']
+        d['lon'] = p['@longitude']
+        d['lat'] = p['@latitude']
+        d['url'] = p['@url_l']
+        dlist.append(d.copy())
+             
+        
+    dlist_json = json.dumps(dlist)
 
-    #geo = flickr.photos.geo.getLocation(photo_id='28007228350')
-    #print geo
-    
-    #test_xmltojson()
+    with open('./photos_list.json', 'w') as f:
+        json.dump(dlist, f, sort_keys = True)
 
+        
     return
 
 def xmltojson(xml_string, xml_attribs=True):
@@ -31,14 +41,6 @@ def xmltojson(xml_string, xml_attribs=True):
     import xmltodict
     d = xmltodict.parse(xml_string, xml_attribs=xml_attribs)
     return json.loads(json.dumps(d, indent=4))
-        
-## deprecated
-#def test_xmltojson():
-#    data = xmltojson('./test.xml')
-#    names = data['employees']['person']
-#    for n in names:
-#        print n
-#    return
     
 def initialise():
     from ConfigParser import SafeConfigParser
