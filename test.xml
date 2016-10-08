@@ -1,0 +1,8 @@
+<employees>
+    <person>
+        <name value="Alice"/>
+    </person>
+    <person>
+        <name value="Bob"/>
+    </person>
+</employees>
