@@ -26,13 +26,11 @@ def main():
         d['lat'] = p['@latitude']
         d['url'] = p['@url_l']
         dlist.append(d.copy())
-             
         
     #dlist_json = json.dumps(dlist)
 
     with open('./photos_list.json', 'w') as f:
         json.dump(dlist, f, sort_keys = True)
-
         
     return
 
