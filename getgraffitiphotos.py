@@ -28,7 +28,7 @@ def main():
         dlist.append(d.copy())
              
         
-    dlist_json = json.dumps(dlist)
+    #dlist_json = json.dumps(dlist)
 
     with open('./photos_list.json', 'w') as f:
         json.dump(dlist, f, sort_keys = True)
